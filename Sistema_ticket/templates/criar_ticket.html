@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Criar Ticket{% endblock %}
+
+{% block content %}
+<h1 class="mt-4">Criar Novo Ticket</h1>
+
+<!-- Formulário para criar um novo ticket -->
+<form method="post" action="{{ url_for('criar_ticket') }}">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+        {{ form.titulo.label(class="form-label") }}
+        {{ form.titulo(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.cliente_id.label(class="form-label") }}
+        <div class="input-group">
+            {{ form.cliente_id(class="form-control") }}
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#criarClienteModal">
+                Criar Cliente
+              </button>
+        </div>
+    </div>
+
+
+    <div class="mb-3">
+        {{ form.descricao.label(class="form-label") }}
+        {{ form.descricao(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.status.label(class="form-label") }}
+        {{ form.status(class="form-control") }}
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Criar Ticket</button>
+</form>
+
+<!-- Modal para Novo Cliente -->
+<div class="modal fade" id="criarClienteModal" tabindex="-1" role="dialog" aria-labelledby="criarClienteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="criarClienteModalLabel">Criar Novo Cliente</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Formulário para novo cliente -->
+                <form method="post" action="{{ url_for('criar_cliente') }}">
+                    {{ form_cliente.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form_cliente.nome.label(class="form-label") }}
+                        {{ form_cliente.nome(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_cliente.email.label(class="form-label") }}
+                        {{ form_cliente.email(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_cliente.cnpj_cpf.label(class="form-label") }}
+                        {{ form_cliente.cnpj_cpf(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_cliente.razao_social.label(class="form-label") }}
+                        {{ form_cliente.razao_social(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_cliente.telefone.label(class="form-label") }}
+                        {{ form_cliente.telefone(class="form-control") }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar Cliente</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

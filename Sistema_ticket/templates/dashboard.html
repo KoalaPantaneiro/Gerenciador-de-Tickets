@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1 class="mt-4">Dashboard</h1>
+<p>Bem-vindo ao sistema de gerenciamento de tickets!</p>
+<div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="card bg-success text-white mb-4">
+            <div class="card-body">Abertos</div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <h3>{{ abertos }}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="card bg-danger text-white mb-4">
+            <div class="card-body">Finalizados</div>
+            <div class="card-footer d-flex align-items-center justify-content-between">
+                <h3>{{ finalizados }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                Clientes
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Tickets em Aberto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cliente in top_clientes %}
+                        <tr>
+                            <td>{{ cliente.nome }}</td>
+                            <td>{{ cliente.email }}</td>
+                            <td>{{ cliente.tickets_abertos }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

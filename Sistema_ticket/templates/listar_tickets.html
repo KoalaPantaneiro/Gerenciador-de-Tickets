@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Tickets{% endblock %}
+
+{% block content %}
+<h1 class="mt-4">Tickets</h1>
+
+<!-- Botão para criar novo ticket -->
+<a href="{{ url_for('criar_ticket') }}" class="btn btn-primary mb-4">Novo Ticket</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Cliente</th>
+            <th>Status</th>
+            <th>Data de Abertura</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        {% for ticket in tickets %}
+        <tr>
+            <td>{{ ticket.id }}</td>
+            <td>{{ ticket.titulo }}</td>
+            <td>{{ ticket.cliente.nome if ticket.cliente else 'Nenhum Cliente' }}</td>
+            <td>
+                <span class="badge badge-{{ 'aberto' if ticket.status == 'Aberto' else 'finalizado' }}">
+                    {{ ticket.status }}
+                </span>
+            </td>
+            <td>{{ ticket.data_abertura.strftime('%d/%m/%Y %H:%M') }}</td>
+            <td>
+                <!-- Botão para editar ticket -->
+                <a href="{{ url_for('editar_ticket', ticket_id=ticket.id) }}" class="btn btn-warning btn-sm">
+                    <i class="fas fa-edit"></i> Editar
+                </a>
+
+                <!-- Botão para deletar ticket -->
+                <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmModal" data-url="{{ url_for('deletar_ticket', ticket_id=ticket.id) }}">
+                    <i class="fas fa-trash-alt"></i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal de Confirmação -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirmar Exclusão</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Você tem certeza de que deseja excluir este ticket?</p>
+                <p class="mb-4">Esta ação não pode ser desfeita.</p>
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" method="post">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Excluir</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Cliente{% endblock %}
+
+{% block content %}
+<h1 class="mt-4">Editar Cliente</h1>
+
+<form method="post">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+        {{ form.nome.label(class="form-label") }}
+        {{ form.nome(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.email.label(class="form-label") }}
+        {{ form.email(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.cnpj_cpf.label(class="form-label") }}
+        {{ form.cnpj_cpf(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.razao_social.label(class="form-label") }}
+        {{ form.razao_social(class="form-control") }}
+    </div>
+    <div class="mb-3">
+        {{ form.telefone.label(class="form-label") }}
+        {{ form.telefone(class="form-control") }}
+    </div>
+    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+</form>
+
+{% endblock %}

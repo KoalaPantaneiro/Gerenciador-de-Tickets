@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Ticket{% endblock %}
+
+{% block content %}
+<h1 class="mt-4">Editar Ticket</h1>
+<form action="{{ url_for('editar_ticket', ticket_id=ticket.id) }}" method="post">
+    {{ form.hidden_tag() }}
+    {{ form.errors }}
+    <p>Cliente ID no formulário: {{ form.cliente_id.data }}</p>
+    <div class="mb-3">
+        <label for="titulo" class="form-label">Título</label>
+        {{ form.titulo(class="form-control", id="titulo", required=True) }}
+    </div>
+    <div class="mb-3">
+        <label for="cliente" class="form-label">Cliente</label>
+        {{ form.cliente_id(class="form-control", id="cliente") }}
+    </div>
+    <div class="mb-3">
+        <label for="descricao" class="form-label">Descrição</label>
+        {{ form.descricao(class="form-control", id="descricao", rows="3", required=True) }}
+    </div>
+    <div class="mb-3">
+        <label for="status" class="form-label">Status</label>
+        {{ form.status(class="form-control", id="status") }}
+    </div>
+    <button type="submit" class="btn btn-primary">Salvar</button>
+</form>
+
+{% endblock %}

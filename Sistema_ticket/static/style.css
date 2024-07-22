@@ -1,0 +1,93 @@
+/* Geral */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f6f9;
+    padding-top: 56px; /* Espaço para a navbar fixa */
+}
+
+/* Container */
+.container {
+    max-width: 1200px; /* Largura máxima do container */
+}
+
+/* Card */
+.card {
+    border-radius: 10px; /* Bordas arredondadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Estilo para o título do cartão */
+.card-title {
+    font-size: 2em; /* Tamanho do texto do título */
+}
+
+/* Botões */
+.btn-primary {
+    background-color: #007bff; /* Cor de fundo do botão primário */
+    border-color: #007bff; /* Cor da borda do botão primário */
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Cor de fundo ao passar o mouse */
+    border-color: #004085; /* Cor da borda ao passar o mouse */
+}
+
+.btn-success {
+    background-color: #28a745; /* Cor de fundo do botão de sucesso */
+    border-color: #28a745; /* Cor da borda do botão de sucesso */
+}
+
+.btn-success:hover {
+    background-color: #218838; /* Cor de fundo ao passar o mouse */
+    border-color: #1e7e34; /* Cor da borda ao passar o mouse */
+}
+
+/* Tabela */
+.table {
+    margin-top: 20px; /* Espaço superior para a tabela */
+    background-color: #fff; /* Cor de fundo da tabela */
+    border-radius: 10px; /* Bordas arredondadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.table th, .table td {
+    padding: 15px; /* Espaçamento interno das células */
+    vertical-align: middle; /* Alinhamento vertical centralizado */
+}
+
+.table thead th {
+    border-bottom: 2px solid #dee2e6; /* Borda inferior do cabeçalho */
+    background-color: #343a40; /* Cor de fundo do cabeçalho */
+    color: #fff; /* Cor do texto do cabeçalho */
+}
+
+.table tbody tr:hover {
+    background-color: #f1f1f1; /* Cor de fundo ao passar o mouse */
+}
+
+/* Status Badge */
+.badge {
+    font-size: 1em; /* Tamanho da fonte do badge */
+    padding: 0.5em 1em; /* Espaçamento interno do badge */
+    border-radius: 10px; /* Bordas arredondadas do badge */
+}
+
+.badge-aberto {
+    background-color: #28a745; /* Cor de fundo para 'Aberto' */
+    color: #fff; /* Cor do texto para 'Aberto' */
+}
+
+.badge-finalizado {
+    background-color: #dc3545; /* Cor de fundo para 'Finalizado' */
+    color: #fff; /* Cor do texto para 'Finalizado' */
+}
+
+.icon-delete {
+    font-size: 30px; /* Ajuste o tamanho do ícone conforme necessário */
+    vertical-align: middle; /* Alinha o ícone verticalmente com o texto */
+    color: #FFD700
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem; /* Ajuste o valor conforme necessário */
+}
