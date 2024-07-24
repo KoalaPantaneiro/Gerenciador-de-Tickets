@@ -4,6 +4,8 @@ from datetime import datetime
 from forms import TicketForm, ClienteForm
 from datetime import datetime
 import pytz
+from models import db, Cliente, Ticket
+from werkzeug.datastructures import ImmutableMultiDict
 
 # Defina o fuso horário para Mato Grosso do Sul
 # Ajuste para o fuso horário correto
@@ -37,6 +39,14 @@ class Ticket(db.Model):
         db.DateTime, nullable=False, default=datetime.utcnow)
     cliente_id = db.Column(
         db.Integer, db.ForeignKey('cliente.id'), nullable=True)
+
+
+@app.before_request
+def before_request():
+    if request.method == 'POST' and '_method' in request.form:
+        method = request.form['_method'].upper()
+        if method in ['PUT', 'DELETE']:
+            request.environ['REQUEST_METHOD'] = method
 
 
 @app.route('/')
@@ -139,40 +149,47 @@ def editar_ticket(ticket_id):
     return render_template('editar_ticket.html', form=form, ticket=ticket, clientes=clientes)
 
 
-@app.route('/tickets/deletar/<int:ticket_id>', methods=['POST'])
+@app.route('/tickets/deletar/<int:ticket_id>', methods=['POST', 'DELETE'])
 def deletar_ticket(ticket_id):
     ticket = Ticket.query.get_or_404(ticket_id)
-    try:
-        db.session.delete(ticket)
-        db.session.commit()
-        flash('Ticket excluído com sucesso!', 'success')
-    except:
-        db.session.rollback()
-        flash('Erro ao excluir o ticket. Tente novamente.', 'danger')
+    db.session.delete(ticket)
+    db.session.commit()
+    flash('Ticket excluído com sucesso!', 'success')
     return redirect(url_for('listar_tickets'))
 
 
 @app.route('/clientes/novo', methods=['POST'])
 def criar_cliente():
-    print(request.form)  # Adiciona esta linha para ver os dados recebidos
-    nome = request.form['nome']
-    email = request.form['email']
-    cnpj_cpf = request.form['cnpj_cpf']
-    razao_social = request.form['razao_social']
-    telefone = request.form['telefone']
-
-    novo_cliente = Cliente(nome=nome, email=email, cnpj_cpf=cnpj_cpf,
-                           razao_social=razao_social, telefone=telefone)
-
-    try:
-        db.session.add(novo_cliente)
+    form = ClienteForm()
+    if form.validate_on_submit():
+        cliente = Cliente(
+            nome=form.nome.data,
+            email=form.email.data,
+            cnpj_cpf=form.cnpj_cpf.data,
+            razao_social=form.razao_social.data,
+            telefone=form.telefone.data
+        )
+        db.session.add(cliente)
         db.session.commit()
         flash('Cliente criado com sucesso!', 'success')
-    except Exception as e:
-        db.session.rollback()
-        flash(f'Erro ao criar o cliente. Tente novamente. Erro: {e}', 'danger')
+    return redirect(url_for('listar_clientes'))
 
-    return redirect(request.referrer or url_for('criar_ticket'))
+
+@app.route('/clientes/novo2', methods=['POST'])
+def criar_cliente_ticket():
+    form = ClienteForm()
+    if form.validate_on_submit():
+        cliente = Cliente(
+            nome=form.nome.data,
+            email=form.email.data,
+            cnpj_cpf=form.cnpj_cpf.data,
+            razao_social=form.razao_social.data,
+            telefone=form.telefone.data
+        )
+        db.session.add(cliente)
+        db.session.commit()
+        flash('Cliente criado com sucesso!', 'success')
+    return redirect(url_for('criar_ticket'))
 
 
 @app.route('/editar_cliente/<int:cliente_id>', methods=['GET', 'POST'])
@@ -187,7 +204,7 @@ def editar_cliente(cliente_id):
     return render_template('editar_cliente.html', form=form, cliente=cliente)
 
 
-@app.route('/clientes/excluir/<int:cliente_id>', methods=['POST'])
+@app.route('/clientes/excluir/<int:cliente_id>', methods=['POST', 'DELETE'])
 def excluir_cliente(cliente_id):
     cliente = Cliente.query.get_or_404(cliente_id)
     db.session.delete(cliente)
@@ -196,10 +213,11 @@ def excluir_cliente(cliente_id):
     return redirect(url_for('listar_clientes'))
 
 
-@app.route('/clientes/novo', methods=['GET'])
+@app.route('/clientes', methods=['GET'])
 def listar_clientes():
     clientes = Cliente.query.all()
-    return render_template('clientes.html', clientes=clientes)
+    form = ClienteForm()  # Cria uma instância do formulário
+    return render_template('clientes.html', clientes=clientes, form=form)
 
 
 @app.route('/clientes/ids', methods=['GET'])

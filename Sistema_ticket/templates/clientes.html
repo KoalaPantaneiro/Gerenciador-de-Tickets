@@ -5,10 +5,13 @@
 {% block content %}
 <h1 class="mt-4">Clientes</h1>
 
-<!-- Botão para criar novo cliente -->
-<a href="{{ url_for('criar_cliente') }}" class="btn btn-primary mb-4">Novo Cliente</a>
+<!-- Botão para abrir o modal de criar cliente -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#criarClienteModal">
+    Novo Cliente
+  </button>
 
-<table class="table table-striped">
+<!-- Tabela de clientes -->
+<table class="table">
     <thead>
         <tr>
             <th>ID</th>
@@ -30,37 +33,69 @@
             <td>{{ cliente.razao_social }}</td>
             <td>{{ cliente.telefone }}</td>
             <td>
-                <!-- Botão para editar cliente -->
-                <a href="{{ url_for('editar_cliente', cliente_id=cliente.id) }}" class="btn btn-warning btn-sm">
-                    <i class="fas fa-edit"></i> Editar
-                </a>
-
-                <!-- Botão para deletar cliente -->
-                <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmModal" data-url="{{ url_for('excluir_cliente', cliente_id=cliente.id) }}">
-                    <i class="fas fa-trash-alt"></i>
-                </a>
+                <a href="{{ url_for('editar_cliente', cliente_id=cliente.id) }}" class="btn btn-primary">Editar</a>
+                <button class="btn btn-danger" data-toggle="modal" data-target="#confirmModalCliente" data-url="{{ url_for('excluir_cliente', cliente_id=cliente.id) }}">Excluir</button>
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
-<!-- Modal de Confirmação -->
-<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+<!-- Modal de Criar Cliente -->
+<div class="modal fade" id="criarClienteModal" tabindex="-1" role="dialog" aria-labelledby="criarClienteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="confirmModalLabel">Confirmar Exclusão</h5>
+                <h5 class="modal-title" id="criarClienteModalLabel">Criar Cliente</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Você tem certeza de que deseja excluir este cliente?</p>
-                <p class="mb-4">Esta ação não pode ser desfeita.</p>
+                <form action="{{ url_for('criar_cliente') }}" method="post">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome</label>
+                        {{ form.nome(class="form-control", id="nome", required=True) }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        {{ form.email(class="form-control", id="email", required=True) }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="cnpj_cpf" class="form-label">CNPJ/CPF</label>
+                        {{ form.cnpj_cpf(class="form-control", id="cnpj_cpf", required=True) }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="razao_social" class="form-label">Razão Social</label>
+                        {{ form.razao_social(class="form-control", id="razao_social") }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefone" class="form-label">Telefone</label>
+                        {{ form.telefone(class="form-control", id="telefone", required=True) }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmação de exclusão -->
+<div class="modal fade" id="confirmModalCliente" tabindex="-1" role="dialog" aria-labelledby="confirmModalClienteLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalClienteLabel">Confirmar Exclusão</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Tem certeza de que deseja excluir este cliente?
             </div>
             <div class="modal-footer">
-                <form id="deleteForm" method="post">
+                <form id="deleteClienteForm" method="POST" action="">
                     <input type="hidden" name="_method" value="DELETE">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-danger">Excluir</button>
@@ -70,13 +105,14 @@
     </div>
 </div>
 
+<!-- Script para definir a ação do formulário de exclusão -->
 <script>
-    $('#confirmModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget); // Botão que acionou o modal
-        var url = button.data('url'); // Obtém a URL para exclusão
-        var modal = $(this);
-        modal.find('#deleteForm').attr('action', url); // Define a URL da ação do formulário de exclusão
-    });
+    $('#confirmModalCliente').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Botão que acionou o modal
+        var url = button.data('url') // Extrai a informação dos atributos data-*
+        var modal = $(this)
+        modal.find('#deleteClienteForm').attr('action', url)
+    })
 </script>
 
 {% endblock %}

@@ -24,7 +24,7 @@
                         <a class="nav-link" href="{{ url_for('listar_tickets') }}">Tickets</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('criar_cliente') }}">Clientes</a>
+                        <a class="nav-link" href="{{ url_for('listar_clientes') }}">Clientes</a>
                     </li>
                 </ul>
             </div>
@@ -88,5 +88,15 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            $('#confirmModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Botão que disparou o modal
+                var url = button.data('url'); // Extrai informação do atributo data-url
+                var modal = $(this);
+                modal.find('form').attr('action', url); // Define a ação do formulário com a URL correta
+            });
+        });
+        </script>
 </body>
 </html>

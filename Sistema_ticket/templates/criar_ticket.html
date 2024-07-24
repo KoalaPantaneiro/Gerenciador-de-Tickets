@@ -47,7 +47,7 @@
             </div>
             <div class="modal-body">
                 <!-- Formulário para novo cliente -->
-                <form method="post" action="{{ url_for('criar_cliente') }}">
+                <form method="post" action="{{ url_for('criar_cliente_ticket') }}">
                     {{ form_cliente.hidden_tag() }}
                     <div class="mb-3">
                         {{ form_cliente.nome.label(class="form-label") }}
